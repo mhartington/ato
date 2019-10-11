@@ -1,0 +1,450 @@
+import { Image, Notes } from 'mdx-deck'
+import ionic from './theme/ionic'
+import Provider from './layout/provider'
+import ColorLayout from './layout/color'
+import {  CodeSurfer } from 'code-surfer';
+import {  vsDark } from '@code-surfer/themes';
+
+export const themes = [ionic, Provider];
+
+# FROM CROSS PLATFORM <br/> TO CROSS FRAMEWORK
+
+[Mike Hartington | @mhartington](https://twitter.com/mhartington)
+
+---
+
+### Let's rewind to 2013
+
+---
+
+### This mobile web <br/> thing is here to stay
+
+---
+
+> Most mobile tools our there are a pain to <br/> use and are difficult to wire together
+
+---
+
+### Enter Ionic
+
+- Components built for mobile
+- Gestures & Animations
+- All around awesome stuff
+
+---
+
+_Record scratch_
+
+What's that?
+
+Oh, it's 2013
+
+---
+
+#### "State of the art" looked like this
+
+---
+
+
+<CodeSurfer>
+
+```js
+(function(ionic) {
+  var NOOP = function() {};
+  var deprecated = function(name) {
+    console.error('Method not available in native scrolling: ' + name);
+  };
+  ionic.views.ScrollNative = ionic.views.View.inherit({
+    initialize: function(options) {
+      var self = this;
+      self.__container = self.el = options.el;
+      self.__content = options.el.firstElementChild;
+      // Whether scrolling is frozen or not
+      self.__frozen = false;
+      self.isNative = true;
+
+      self.__scrollTop = self.el.scrollTop;
+      self.__scrollLeft = self.el.scrollLeft;
+      self.__clientHeight = self.__content.clientHeight;
+      self.__clientWidth = self.__content.clientWidth;
+      self.__maxScrollTop = Math.max(
+        self.__contentHeight - self.__clientHeight,
+        0
+      );
+      self.__maxScrollLeft = Math.max(
+        self.__contentWidth - self.__clientWidth,
+        0
+      );
+
+      if (options.startY >= 0 || options.startX >= 0) {
+        ionic.requestAnimationFrame(function() {
+          self.__originalContainerHeight = self.el.getBoundingClientRect().height;
+
+          self.el.scrollTop = options.startY || 0;
+          self.el.scrollLeft = options.startX || 0;
+
+          self.__scrollTop = self.el.scrollTop;
+          self.__scrollLeft = self.el.scrollLeft;
+```
+
+</CodeSurfer>
+
+---
+
+#### JavaScript frameworks were…Ok at best
+
+---
+
+import repo from './imgs/ionic-v1.png'
+
+<Image src={repo}  size="contain"/>
+
+---
+
+### Planned support
+- jQuery: _not even a "framework"_
+- KnockoutJS: _For the ASP folks_
+- Backbone: _hipster micro front end_
+- AngularJS: _You know what it is_
+
+---
+
+For us…AngularJS was the right call for us.
+
+---
+
+### But fast forward to 2018
+
+---
+
+Frameworks (and JavaScript) got good
+
+---
+
+- Angular is great
+- Vue is great
+- React is great
+- **X** is great
+
+---
+
+The argument is not "what is better" <br/> but "what is right for my team and needs"
+
+---
+
+But frameworks can come and go
+
+---
+
+### AngularJS => Angular => ???
+
+<Notes>
+
+Insert your favorite framework there now, but what about in 5 years?
+The problem here is that frameworks come and go, and if you don't think your framework is going to go away, you're kidding yourself.
+
+There needs to be a more stable solution.
+
+</Notes>
+
+---
+
+### Frameworks for:
+
+- **Apps** does make sense
+
+- **Components** do not make sense
+
+---
+
+#### What option allows for maximum flexibility <br/> but still provides an entry point for frameworks?
+
+---
+
+### Web Components
+
+_Specifically built with StencilJS_
+
+---
+
+### Why
+
+- Built in the browser (stable)
+- Low Level (fast by default)
+- Flexible enough for our needs
+- No custom runtime
+
+<Notes>I think web components get dragged under on the twitter/social media conversation. A lot of stems from misinformation or misunderstand what the goal of web components are.
+
+Be it that some of this misinformation has come from creators/leaders in the web component world does make it a bit more difficult to fight, there are definite values here that you could get from frameworks, but at a fraction of the size
+</Notes>
+
+---
+
+### So why Stencil
+
+- Compiler for Web Components
+- VDom + Static types
+- Normalizes component quirks (Attrs vs Props)
+- Differential builds/polyfils
+
+<Notes>
+
+SO if WC are so great, why use something like Stencil? Why not just use them directly.
+
+So for those who don't know, Stencil is a project we at Ionic created to make building web components feel more natural to framework focused devs. It's Goal is to help you make the component layer and not be a replacement for your framework, but integrate with them seamlessly.
+
+Stencil also helps dev deal with the mental shift between things that are properties and attributes. This actually took me a little bit to actually understand, mostly because I've been in framework land for so long. But the TL;DR of it is that when declare something at a property in Stencil, a attribute is also created on the element that maps directly back. SO there's no need to have this mental mapping of what to update. You just do one operation and both are handled.
+
+</Notes>
+
+
+---
+
+### So how does it work?
+
+---
+
+
+<CodeSurfer>
+
+```ts file="./snippets/ionic-component.ts"
+```
+
+```diff 1:5
+```
+
+```diff 8:16
+```
+
+```diff 24,28:42
+```
+
+</CodeSurfer>
+
+---
+
+### Core Goals
+
+- Isolate components to simplest form
+- Props, events, methods, and render
+- Decorators for simplicity!
+
+---
+
+
+### With Angular
+
+---
+
+### Challenges
+
+- "The Angular way"
+- Router Integration
+- Rendering Queue
+
+---
+
+
+### Demo
+
+`$ ionic start myApp --type angular`
+
+
+---
+
+### What worked well
+
+---
+
+### Angular By in
+- Defaulting to Angular CLI
+- Extending instead of rewriting
+- **Provide proxies for type info**
+
+---
+
+<CodeSurfer>
+
+```ts
+proxyInputs(IonTitle, ['color', 'size']);
+
+@Component({
+  selector: 'ion-toggle',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<ng-content></ng-content>',
+  inputs: ['checked', 'color', 'disabled', 'mode', 'name', 'value']
+})
+export class IonToggle {
+  ionChange!: EventEmitter<CustomEvent>;
+  ionFocus!: EventEmitter<CustomEvent>;
+  ionBlur!: EventEmitter<CustomEvent>;
+  protected el: HTMLElement;
+  constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
+    c.detach();
+    this.el = r.nativeElement;
+    proxyOutputs(this, this.el, ['ionChange', 'ionFocus', 'ionBlur']);
+  }
+}
+proxyInputs(IonToggle, [
+  'checked',
+  'color',
+  'disabled',
+  'mode',
+  'name',
+  'value'
+]);
+```
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```ts 1[20:41],9[1:35]
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class AppModule {}
+```
+
+</CodeSurfer>
+
+---
+
+### Other Places
+- `IonRouterOutlet`: extends Angular Router
+- `@ionic/angular-toolkit`: extend Angular Builders
+- `ng generate page`: extends Angular Schematics
+
+---
+
+### `</Angular>`
+
+---
+
+### `<React/>`
+
+---
+
+### Challenges
+
+- Props/Attrs and values
+- Handling Custom Events
+- Working with Routers…again
+
+---
+
+### FUD
+
+---
+
+"Web Components are DOA"
+
+"Web Components can only handle strings"
+
+"React is better because..."
+
+---
+
+import seldo from './imgs/seldo-tweet.png';
+
+<ColorLayout bgColor="#15202b">
+  <h1 style="color: white; font-size: 60px">"BUILD REACT INTO THE BROWSER YOUR COWARDS"</h1>
+</ColorLayout>
+
+---
+
+<p style="font-size:100px">ಠ_ಠ</p>
+
+---
+
+_anyways...._
+
+---
+
+### Demo
+
+`$ ionic start myApp --type react`
+
+
+---
+
+### What worked well
+
+---
+
+### Embrace React
+- Keeping opinions minimal
+- Splitting router from components
+- Automated Wrapper Components
+
+---
+
+<CodeSurfer>
+
+```ts
+export const IonCard = createReactComponent('ion-card', true);
+export const IonCardContent = createReactComponent('ion-card-content');
+```
+
+</CodeSurfer>
+
+---
+
+
+<CodeSurfer>
+
+```ts
+render(){
+  ...
+  return React.createElement(
+    tagName,
+    newProps,
+    children
+  );
+}
+```
+
+</CodeSurfer>
+
+---
+
+### So...why?
+
+---
+
+- Frameworks come and go
+- Standards are here to stay
+- But Frameworks are helpful
+
+---
+
+<Image src={repo}  size="contain"/>
+
+_INSERT NICOLE SULIVAN QUOTE_
+
+---
+
+### Bring Ionic to more developers
+
+---
+
+Make building app easy, regardless of technology of choice
+
+---
+
+
+[mhartington.io/ato](https://mhartington.io/ato)
+
+[Mike Hartington | @mhartington](https://twitter.com/mhartington)
+
+#### `</html>`
+
