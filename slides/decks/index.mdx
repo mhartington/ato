@@ -1,7 +1,7 @@
 import { Image, Notes } from 'mdx-deck'
-import ionic from './theme/ionic'
-import Provider from './layout/provider'
-import ColorLayout from './layout/color'
+import ionic from '../theme/ionic'
+import Provider from '../layout/provider'
+import ColorLayout from '../layout/color'
 import {  CodeSurfer } from 'code-surfer';
 import {  vsDark } from '@code-surfer/themes';
 
@@ -95,9 +95,7 @@ Oh, it's 2013
 
 ---
 
-import repo from './imgs/ionic-v1.png'
-
-<Image src={repo}  size="contain"/>
+<Image src="ionic-v1.png"  size="contain"/>
 
 ---
 
@@ -208,7 +206,7 @@ Stencil also helps dev deal with the mental shift between things that are proper
 
 <CodeSurfer>
 
-```ts file="./snippets/ionic-component.ts"
+```ts file="../snippets/ionic-component.ts"
 ```
 
 ```diff 1:5
@@ -233,7 +231,7 @@ Stencil also helps dev deal with the mental shift between things that are proper
 ---
 
 
-### With Angular
+### `<Angular>`
 
 ---
 
@@ -267,8 +265,6 @@ Stencil also helps dev deal with the mental shift between things that are proper
 <CodeSurfer>
 
 ```ts
-proxyInputs(IonTitle, ['color', 'size']);
-
 @Component({
   selector: 'ion-toggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -295,13 +291,31 @@ proxyInputs(IonToggle, [
   'value'
 ]);
 ```
+
+```diff 1:6
+```
+
+```diff 7:11
+```
+
+```diff 12:17
+```
+
+```diff 13
+```
+
+```diff
+```
+
+
+
 </CodeSurfer>
 
 ---
 
 <CodeSurfer>
 
-```ts 1[20:41],9[1:35]
+```ts 1[20:41],9[1:35] title='No need for this'
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
@@ -320,9 +334,9 @@ export class AppModule {}
 ---
 
 ### Other Places
-- `IonRouterOutlet`: extends Angular Router
+- `<ion-router-outlet>`: extends Angular Router
 - `@ionic/angular-toolkit`: extend Angular Builders
-- `ng generate page`: extends Angular Schematics
+- `ng generate`: extends Angular Schematics
 
 ---
 
@@ -330,7 +344,7 @@ export class AppModule {}
 
 ---
 
-### `<React/>`
+### `<React>`
 
 ---
 
@@ -353,8 +367,6 @@ export class AppModule {}
 "React is better because..."
 
 ---
-
-import seldo from './imgs/seldo-tweet.png';
 
 <ColorLayout bgColor="#15202b">
   <h1 style="color: white; font-size: 60px">"BUILD REACT INTO THE BROWSER YOUR COWARDS"</h1>
@@ -417,29 +429,36 @@ render(){
 
 ---
 
-### So...why?
+### `</React>`
+
+---
+
+All this work was done by hand at first
+
+---
+
+But now is provided by stencil and it's compiler
+
+---
+
+### So, why do this?
 
 ---
 
 - Frameworks come and go
 - Standards are here to stay
-- But Frameworks are helpful
+- **But Frameworks are helpful**
 
 ---
-
-<Image src={repo}  size="contain"/>
 
 _INSERT NICOLE SULIVAN QUOTE_
-
----
-
-### Bring Ionic to more developers
 
 ---
 
 Make building app easy, regardless of technology of choice
 
 ---
+
 
 
 [mhartington.io/ato](https://mhartington.io/ato)
