@@ -6,7 +6,6 @@ import {
   IonTabButton,
   IonIcon,
   IonLabel,
-  IonPage
 } from '@ionic/react';
 import { Route, Redirect } from 'react-router-dom';
 import { flash, apps, send } from 'ionicons/icons';
@@ -18,11 +17,7 @@ export default function Tabs() {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route
-          exact={true}
-          path="/tabs"
-          render={() => <Redirect to="/tabs/tab1" />}
-        />
+        <Route exact={true} path="/tabs" render={() => <Redirect to="/tabs/tab1" />} />
         <Route path="/tabs/tab1" component={Tab1} exact={true} />
         <Route path="/tabs/tab2" component={Tab2} exact={true} />
         <Route path="/tabs/tab2/details" component={Details} />

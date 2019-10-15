@@ -13,11 +13,15 @@ const Provider = props => (
     {props.children}
     <div
       css={{
+        padding: '14px 28px',
+        background: 'white',
         position: 'fixed',
         fontFamily: '"Inter", system-ui, sans-serif',
+        fontWeight: 'bolder',
+        fontSize: '28px',
         right: 0,
         bottom: 0,
-        margin: 16,
+        margin: 0,
         color: ''
       }}
     >
